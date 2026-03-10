@@ -3,6 +3,7 @@
 #include "hardware/uart.h"
 #include "hardware/gpio.h"
 #include "AdafruitGPS.hpp"
+#include "PLANTOWER_PMSA003.hpp"
 
 #define UART_ID uart0
 #define BAUD_RATE 9600
@@ -13,6 +14,8 @@
 #define GPSECHO true  // Set to true to echo raw GPS data to Serial
 
 AdafruitGPS GPS;
+
+PMSA003 pms(i2c0);
 
 uint32_t timer = to_ms_since_boot(get_absolute_time());
 
@@ -36,6 +39,13 @@ void setup(void) {
     sleep_ms(2000);
 
     printf("Pico GPS Reader Started\n");
+    
+    // Initialize PMSA003
+	pms.init(4, 5);
+	
+	sleep_ms(2000);
+
+    printf("PMSA003 Reader Started\n");
 }
 
 int main(void) {
@@ -43,6 +53,8 @@ int main(void) {
     while(1) {
         // Read characters from GPS
         char c = GPS.read();
+        int16_t pm25 = pms.read_pm25();
+        
         if (GPSECHO && c) printf("%c", c);
         // If a sentence is received, parse it
         if (GPS.newNMEAreceived()) {
@@ -64,6 +76,7 @@ int main(void) {
                     GPS.day, GPS.month, GPS.year,
                     GPS.hour, GPS.minute, GPS.seconds);
             }
+            printf("PM2.5: %d ug/m3\n", pm25);
         }
     }
 

@@ -17,6 +17,8 @@ target_link_libraries(pico_gps
     pico_stdlib
     hardware_uart
     AdafruitGPS
+    hardware_i2c
+    PLANTOWER_PMSA003
 )
 
 pico_enable_stdio_usb(pico_gps 1)
