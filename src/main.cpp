@@ -53,7 +53,7 @@ int main(void) {
     while(1) {
         // Read characters from GPS
         char c = GPS.read();
-        int16_t pm25 = pms.read_pm25();
+        int16_t pm25;
         
         if (GPSECHO && c) printf("%c", c);
         // If a sentence is received, parse it
@@ -62,6 +62,7 @@ int main(void) {
         }
         // Print data every 2 seconds
         if (to_ms_since_boot(get_absolute_time()) - timer > 2000) {
+            pm25 = pms.read_pm25();
             timer = to_ms_since_boot(get_absolute_time());
             printf("Fix: %d\n", (int)GPS.fix);
             printf("Quality: %d\n", (int)GPS.fixquality);

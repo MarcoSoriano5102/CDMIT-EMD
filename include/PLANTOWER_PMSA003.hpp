@@ -1,10 +1,12 @@
 #ifndef PLANTOWER_PMSA003_HPP
 #define PLANTOWER_PMSA003_HPP
 
+#include <cstdio>
+
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 
-#define PMSA003_ADDR 0x42
+#define PMSA003_ADDR 0x12
 
 class PMSA003
 {
